@@ -151,7 +151,9 @@
       animation: floatY 2.5s ease-in-out infinite;
       transition: transform .2s;
     }
-    .hero-emojis span:hover { transform: scale(1.45) rotate(-12deg) !important; }
+    @media (hover: hover) {
+      .hero-emojis span:hover { transform: scale(1.45) rotate(-12deg) !important; }
+    }
     .hero-emojis span:nth-child(1){animation-delay:0s}
     .hero-emojis span:nth-child(2){animation-delay:.2s}
     .hero-emojis span:nth-child(3){animation-delay:.4s}
@@ -282,9 +284,11 @@
       border: 1.5px solid rgba(255,255,255,.06);
       transition: box-shadow .3s, border-color .3s;
     }
-    .flip-card:not(.flipped):hover .flip-front {
-      box-shadow: 0 0 0 2px var(--accent), 0 24px 55px rgba(0,0,0,.55);
-      border-color: var(--accent);
+    @media (hover: hover) {
+      .flip-card:not(.flipped):hover .flip-front {
+        box-shadow: 0 0 0 2px var(--accent), 0 24px 55px rgba(0,0,0,.55);
+        border-color: var(--accent);
+      }
     }
 
     .front-avatar {
@@ -313,8 +317,10 @@
       transition: transform .35s cubic-bezier(.34,1.56,.64,1);
       overflow: hidden;
     }
-    .flip-card:not(.flipped):hover .av-geo {
-      transform: scale(1.1) rotate(-4deg);
+    @media (hover: hover) {
+      .flip-card:not(.flipped):hover .av-geo {
+        transform: scale(1.1) rotate(-4deg);
+      }
     }
     @keyframes avPulse {
       0%,100%{ box-shadow: 0 0 0 8px rgba(255,255,255,.03), 0 0 22px var(--accent); }
@@ -471,7 +477,7 @@
 
     .napoli-icons-row {
       position: relative;
-      display: flex; justify-content: center;
+      display: flex; justify-content: center; flex-wrap: wrap;
       gap: 1.5rem; font-size: 2.8rem; margin-top: 2.5rem;
     }
     .napoli-icons-row span {
@@ -479,10 +485,18 @@
       animation: floatY 2.5s ease-in-out infinite;
       transition: transform .2s, filter .2s; cursor: default;
     }
-    .napoli-icons-row span:hover {
+    @media (hover: hover) {
+      .napoli-icons-row span:hover {
+        transform: scale(1.6) rotate(-15deg) !important;
+        filter: drop-shadow(0 0 12px rgba(245,166,35,.7));
+        animation-play-state: paused;
+      }
+    }
+    .emoji-pop {
       transform: scale(1.6) rotate(-15deg) !important;
-      filter: drop-shadow(0 0 12px rgba(245,166,35,.7));
-      animation-play-state: paused;
+      filter: drop-shadow(0 0 16px rgba(245,166,35,.85)) !important;
+      animation-play-state: paused !important;
+      transition: transform .15s cubic-bezier(.34,1.56,.64,1), filter .15s ease !important;
     }
     .napoli-icons-row span:nth-child(1){animation-delay:0s}
     .napoli-icons-row span:nth-child(2){animation-delay:.25s}
@@ -513,7 +527,7 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 1024px) {
+    @media (max-width: 1180px) {
       #cursor, #cursor-ring { display: none; }
       body { cursor: auto; }
 
@@ -578,7 +592,9 @@
       .napoli { padding: 4rem 1.2rem; }
       .napoli h2 { font-size: clamp(2.8rem,14vw,5rem); }
       .napoli-quote { font-size: .88rem; }
-      .napoli-icons-row { font-size: 2rem; gap: 1rem; margin-top: 1.5rem; }
+      .napoli-icons-row { font-size: 1.8rem; gap: .7rem; margin-top: 1.5rem; flex-wrap: wrap; }
+      .napoli-phrases { font-size: .95rem; max-width: 90vw; }
+      .napoli-phrases span { font-size: 1rem; letter-spacing: .08em; }
 
       #cv { opacity: .22; }
       footer { padding: 1.5rem; font-size: .75rem; }
@@ -1003,6 +1019,17 @@ document.querySelectorAll('.flip-card').forEach((c,i) => {
   c.style.transform = 'translateY(48px)';
   c.style.transition = `opacity .6s ease ${i*.1}s, transform .6s ease ${i*.1}s`;
   obs.observe(c);
+});
+/* ── TOUCH EMOJI EFFECT ── */
+const napoliEmojis = document.querySelectorAll('.napoli-icons-row span');
+napoliEmojis.forEach(el => {
+  el.addEventListener('touchstart', e => {
+    e.preventDefault();
+    // remove active from all others
+    napoliEmojis.forEach(o => o.classList.remove('emoji-pop'));
+    el.classList.add('emoji-pop');
+    setTimeout(() => el.classList.remove('emoji-pop'), 600);
+  }, { passive: false });
 });
 </script>
 </body>
