@@ -534,8 +534,26 @@
         grid-template-columns: 1fr;
         gap: 1.2rem;
       }
-      .flip-card { height: 400px; }
-      .front-avatar { min-height: 220px; }
+
+      /* Su mobile: altezza dinamica, flip diventa slide verticale */
+      .flip-card { height: auto; min-height: 0; }
+      .flip-inner { transform-style: flat; transition: none; }
+      .flip-card.flipped .flip-inner { transform: none; }
+
+      .flip-front, .flip-back {
+        position: relative; inset: auto;
+        border-radius: 24px;
+        backface-visibility: visible;
+      }
+      .flip-back {
+        transform: none;
+        display: none;
+        margin-top: 0;
+      }
+      .flip-card.flipped .flip-front { display: none; }
+      .flip-card.flipped .flip-back  { display: flex; }
+
+      .front-avatar { min-height: 200px; }
       .av-geo { width: 100px; height: 100px; border-radius: 22px; }
 
       .front-info { padding: 1rem 1.2rem 1.2rem; }
